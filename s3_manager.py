@@ -65,8 +65,10 @@ def create_bucket_object(bucket_name, file_path, key_prefix=None):
 	"""Create a bucket object
 	:params bucket_name: The target bucket
 	:params type: str
+	
 	:params file_path: The path to the file to be uploaded to the bucket.
 	:params type: str
+	
 	:params key_prefix: Optional prefix to set in the bucket for the file.
 	:params type: str
 	"""
@@ -78,3 +80,27 @@ def create_bucket_object(bucket_name, file_path, key_prefix=None):
 
 
 # get bucket object
+def get_bucket_object(bucket_name, object_key, dest=None, version_id=None):
+	"""Download a bucket object
+	
+	:params bucket_name: The target bucket
+	:params type: str
+	
+	:params object_key: The bucket object to get
+	:params type: str
+	
+	:params dest: Optional location where the downloaded file will be stored in your local.
+	:params type: str
+	
+	:returns: The bucket object and downloaded file path object.
+	:rtype: tuple
+	"""
+	bucket = get_bucket(bucket_name)
+	params = {'key': object_key}
+	if version_id:
+		params['VersionId'] = version_id
+	bucket_object = bucket.Object(**params)
+	dest = Path(f'{dest or ""}')
+	file_path = dest.joinpath(PosixPath(object_key).name)
+	bucket_object.download_file(f'{file_path}')
+	return bucket_object, file_path
