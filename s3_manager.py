@@ -104,3 +104,13 @@ def get_bucket_object(bucket_name, object_key, dest=None, version_id=None):
 	file_path = dest.joinpath(PosixPath(object_key).name)
 	bucket_object.download_file(f'{file_path}')
 	return bucket_object, file_path
+
+def enable_bucket_versioning(bucket_name):
+	"""Enable bucket versioning for the given bucket_name
+	"""
+	bucket = get_bucket(bucket_name)
+	versioned = bucket.Versioning()
+	versioned.enable()
+	return versioned.status
+
+
