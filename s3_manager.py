@@ -78,5 +78,3 @@ def create_bucket_object(bucket_name, file_path, key_prefix=None):
 
 
 # get bucket object
-
-
